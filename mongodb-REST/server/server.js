@@ -2,6 +2,7 @@ const express = require('express');
 require('./config/config')
 const app = express();
 const mongoose = require('mongoose');
+const path = require('path')
 
 
 const bodyparsen = require('body-parser');
@@ -9,12 +10,13 @@ const bodyparsen = require('body-parser');
 app.use(bodyparsen.urlencoded({ extended: false }))
     //parse application/json
 app.use(bodyparsen.json())
-
-app.use(require('./routes/usuario'));
+    //habilitar el public
+app.use(express.static(path.resolve(__dirname, '../public')))
+    //Configuracion global de rutas
+app.use(require('./routes/index'));
 app.listen(process.env.PORT, () => {
     console.log("Escuchando puerto 3000");
 });
-console.log(process.env.URLDB)
 mongoose.connect(process.env.URLDB, (err, res) => {
     if (err) throw err;
     console.log("Base de Datos en linea");
