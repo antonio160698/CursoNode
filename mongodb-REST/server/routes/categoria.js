@@ -6,24 +6,23 @@ let Categoria = require('../models/categoria');
 
 //Mostrar todas las categorias
 app.get('/categoria', (req, res) => {
-    Categoria.find({})
-        .sort('descripcion')
-        .populate('usuario', 'nombre email')
-        .exec((err, categoriaDB) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
+        Categoria.find({})
+            .sort('descripcion')
+            .populate('usuario', 'nombre email')
+            .exec((err, categoriaDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        err
+                    })
+                }
+                res.json({
+                    ok: true,
+                    categorias: categoriaDB
                 })
-            }
-            res.json({
-                ok: true,
-                categorias: categoriaDB
             })
-        })
-});
-
-//Mostrar Categoria por ID
+    })
+    //Mostrar Categoria por ID
 app.get('/categoria/:id', verificaToken, (req, res) => {
         //Categoria.findById(...)
         let id = req.param.id;
@@ -82,9 +81,6 @@ app.post('/categoria', verificaToken, (req, res) => {
 app.put('/categoria/:id', (req, res) => {
         let id = req.params.id;
         let body = req.body;
-        let descCategoria = {
-            descripcion: body.descripcion
-        }
         Categoria.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, categoriaDB) => {
             if (err) {
                 return res.status(400).json({
