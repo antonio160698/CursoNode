@@ -35,6 +35,10 @@ let usuarioSchema = new Schema({
     google: {
         type: Boolean,
         default: false
+    },
+    img: {
+        type: String,
+        required: false
     }
 });
 usuarioSchema.methods.toJSON = function() {
